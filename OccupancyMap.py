@@ -18,9 +18,9 @@ class OccupancyMap2D:
         self.display_map()
         
     def display_map(self):
-        print('Map:')
+        print('Created map:')
         for row in self.map:
-            print(row)
+            print(f'    {row}')
         
     
     
