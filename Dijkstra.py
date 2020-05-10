@@ -11,9 +11,7 @@ import numpy as np
 class Node:
     def __init__(self, index, distance = None, parent = None):
         self.index = index
-        self.distance = np.inf
-        if distance:
-            self.distance = distance            
+        self.distance = distance            
         self.parent = parent
 
 
@@ -68,30 +66,44 @@ def DijkstraSolver(occupancy_map, start, goal):
     
     print(f'Solving using Dijkstras...')
     while (node_list and not found):
-        # we have not implemented any priority at this point
-        node = node_list.pop()
-        print(f'    Expanding node {node.index}')
+        print(f'Unexpanded nodes: {[x.index for x in node_list]}')
+        # get node with smallest distance
+        
+        min_index = 0
+        min_dist = np.inf
+        for i in range(len(node_list)):
+            if node_list[i].distance < min_dist:
+                min_dist = node_list[i].distance
+                min_index = i 
+        node = node_list.pop(min_index)
+        
+
+        print(f'    Expanding node {node.index} with distance {node.distance}')
         visited_nodes[node.index] = node
         # todo cache neighbors
         for neighbor in get_neighbors(node.index, map):
+            print(f'        found neighbor {neighbor}')
             if neighbor == goal:
                 found = True
                 visited_nodes[neighbor] = Node(neighbor, node.distance + 1, node)
                 break
-            elif neighbor in visited_nodes:
-                if visited_nodes[neighbor].distance < node.distance - 1:
-                    # visited_nodes[neighbor].distance = node.distance + 1
-                    # visited_nodes[neighbor].parent = node.index
-                    visited_nodes[node.index] = Node(node.index, visited_nodes[neighbor].distance + 1, visited_nodes[neighbor])
-                    print(f'    Found previously visited node {visited_nodes[neighbor]}')
-                    print(f'        Updating distance to {visited_nodes[neighbor].distance}')
+            
+            if neighbor in visited_nodes:
+                print(f'            previously visited {visited_nodes[neighbor].index}')
+                if visited_nodes[neighbor].distance > node.distance + 1:
+                    visited_nodes[neighbor].distance = node.distance + 1
+                    visited_nodes[neighbor].parent = node
+                    # visited_nodes[node.index] = Node(node.index, neighbor_node.distance + 1, neighbor_node)
             else:
-                node_list.append(Node(neighbor, node.distance + 1, node))
+                if neighbor not in [n.index for n in node_list]:
+                    node_list.append(Node(neighbor, node.distance + 1, node))
+                    print(f'            appending unvisited {neighbor} with distance {node.distance + 1}')
                                  
     print(f'    Visited {len(visited_nodes)}')
+    
     # once we are done exploring, we check if path was found
     if goal in visited_nodes:
-        print(f'        Found goal {goal} in visited_nodes')
+        print(f'        Found goal {goal} with distance {visited_nodes[goal].distance}')
         node = visited_nodes[goal]
         while (node.index != start):
             path.append(node.index)

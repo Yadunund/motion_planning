@@ -35,8 +35,8 @@ def main():
     map = OccupancyMap2D(n, obstacles)
     
     #solve using Dijkstra
-    start = (1, 1)
-    goal = (7, 8)
+    start = (0, 0)
+    goal = (0, 8)
     path, num_expanded = DijkstraSolver(map, start, goal)
 
     if path:
