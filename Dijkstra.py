@@ -55,26 +55,26 @@ def DijkstraSolver(occupancy_map, start, goal):
     assert(goal[1] < n_cols)
     
     # map index tuple to Node
-    unvisited_nodes = []
+    node_queue = []
     visited_nodes = {}
     found = False
     
     # each node stores distance and parent
-    # expand based on lowest distance in unvisited_nodes
+    # expand based on lowest distance in node_queue
     start_node = Node(start, 0)
-    unvisited_nodes.append(start_node)
+    node_queue.append(start_node)
     
     print(f'Solving using Dijkstras...')
-    while (unvisited_nodes and not found):
-        print(f'Unexpanded nodes: {[x.index for x in unvisited_nodes]}')
+    while (node_queue and not found):
+        print(f'Unexpanded nodes: {[x.index for x in node_queue]}')
         # get node with smallest distance
         min_index = 0
         min_dist = np.inf
-        for i in range(len(unvisited_nodes)):
-            if unvisited_nodes[i].distance < min_dist:
-                min_dist = unvisited_nodes[i].distance
+        for i in range(len(node_queue)):
+            if node_queue[i].distance < min_dist:
+                min_dist = node_queue[i].distance
                 min_index = i 
-        node = unvisited_nodes.pop(min_index)
+        node = node_queue.pop(min_index)
         
 
         print(f'    Expanding node {node.index} with distance {node.distance}')
@@ -94,8 +94,8 @@ def DijkstraSolver(occupancy_map, start, goal):
                     visited_nodes[neighbor].distance = node.distance + 1
                     visited_nodes[neighbor].parent = node
             else:
-                if neighbor not in [n.index for n in unvisited_nodes]:
-                    unvisited_nodes.append(Node(neighbor, node.distance + 1, node))
+                if neighbor not in [n.index for n in node_queue]:
+                    node_queue.append(Node(neighbor, node.distance + 1, node))
                     print(f'            appending unvisited {neighbor} with distance {node.distance + 1}')
                                  
     print(f'    Visited {len(visited_nodes)}')
