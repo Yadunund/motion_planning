@@ -44,7 +44,6 @@ def get_neighbors(index, map):
 # return [path, number of expanded nodes]
 def DijkstraSolver(occupancy_map, start, goal):
     path = []
-    node_list = []
     map = occupancy_map.map
     
     n_rows = len(map)
@@ -55,27 +54,27 @@ def DijkstraSolver(occupancy_map, start, goal):
     assert(goal[0] < n_rows)
     assert(goal[1] < n_cols)
     
-    # each node stores distance and parent
-    # expand based on lowest distance in node_list
-    start_node = Node(start, 0)
-    node_list.append(start_node)
-    
     # map index tuple to Node
+    unvisited_nodes = []
     visited_nodes = {}
     found = False
     
+    # each node stores distance and parent
+    # expand based on lowest distance in unvisited_nodes
+    start_node = Node(start, 0)
+    unvisited_nodes.append(start_node)
+    
     print(f'Solving using Dijkstras...')
-    while (node_list and not found):
-        print(f'Unexpanded nodes: {[x.index for x in node_list]}')
+    while (unvisited_nodes and not found):
+        print(f'Unexpanded nodes: {[x.index for x in unvisited_nodes]}')
         # get node with smallest distance
-        
         min_index = 0
         min_dist = np.inf
-        for i in range(len(node_list)):
-            if node_list[i].distance < min_dist:
-                min_dist = node_list[i].distance
+        for i in range(len(unvisited_nodes)):
+            if unvisited_nodes[i].distance < min_dist:
+                min_dist = unvisited_nodes[i].distance
                 min_index = i 
-        node = node_list.pop(min_index)
+        node = unvisited_nodes.pop(min_index)
         
 
         print(f'    Expanding node {node.index} with distance {node.distance}')
@@ -90,13 +89,13 @@ def DijkstraSolver(occupancy_map, start, goal):
             
             if neighbor in visited_nodes:
                 print(f'            previously visited {visited_nodes[neighbor].index}')
+                # we do not expect this to happen with the grid map
                 if visited_nodes[neighbor].distance > node.distance + 1:
                     visited_nodes[neighbor].distance = node.distance + 1
                     visited_nodes[neighbor].parent = node
-                    # visited_nodes[node.index] = Node(node.index, neighbor_node.distance + 1, neighbor_node)
             else:
-                if neighbor not in [n.index for n in node_list]:
-                    node_list.append(Node(neighbor, node.distance + 1, node))
+                if neighbor not in [n.index for n in unvisited_nodes]:
+                    unvisited_nodes.append(Node(neighbor, node.distance + 1, node))
                     print(f'            appending unvisited {neighbor} with distance {node.distance + 1}')
                                  
     print(f'    Visited {len(visited_nodes)}')

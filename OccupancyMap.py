@@ -11,7 +11,7 @@ import numpy as np
 
 class OccupancyMap2D:
     def __init__(self, n, obstacles = []):
-        self.map = [np.zeros(n) for i in range(n)]
+        self.map = np.zeros((n,n), int)
         for obstacle in obstacles:
             assert(len(obstacle) == 2)
             self.map[obstacle[0]][obstacle[1]] = 1.0
