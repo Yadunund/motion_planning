@@ -1,11 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Sun May 10 21:26:47 2020
-
-@author: yadu
-"""
-
 
 import numpy as np
 
@@ -18,7 +12,7 @@ class OccupancyMap2D:
         self.display_map()
         
     def display_map(self):
-        print('Created map:')
+        print('Map:')
         for row in self.map:
             print(f'    {row}')
         

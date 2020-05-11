@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Sun May 10 23:31:24 2020
-
-@author: yadu
-"""
 
 import numpy as np
 
@@ -57,6 +52,7 @@ def DijkstraSolver(occupancy_map, start, goal):
     # map index tuple to Node
     node_queue = []
     visited_nodes = {}
+    solver_steps = []
     found = False
     
     # each node stores distance and parent
@@ -79,8 +75,12 @@ def DijkstraSolver(occupancy_map, start, goal):
 
         print(f'    Expanding node {node.index} with distance {node.distance}')
         visited_nodes[node.index] = node
+        # solver_steps.append({node.index:[x for x in visited_nodes.keys()]})
         # todo cache neighbors
-        for neighbor in get_neighbors(node.index, map):
+        neighbors = get_neighbors(node.index, map)
+        solver_steps.append({node.index:neighbors})
+        print(f'node {node.index}: {neighbors}')
+        for neighbor in neighbors:
             print(f'        found neighbor {neighbor}')
             if neighbor == goal:
                 found = True
@@ -97,8 +97,7 @@ def DijkstraSolver(occupancy_map, start, goal):
                 if neighbor not in [n.index for n in node_queue]:
                     node_queue.append(Node(neighbor, node.distance + 1, node))
                     print(f'            appending unvisited {neighbor} with distance {node.distance + 1}')
-                                 
-    print(f'    Visited {len(visited_nodes)}')
+
     
     # once we are done exploring, we check if path was found
     if goal in visited_nodes:
@@ -113,4 +112,4 @@ def DijkstraSolver(occupancy_map, start, goal):
     path.reverse()
     num_expanded = len(visited_nodes) -1
     
-    return path, num_expanded
+    return path, num_expanded, solver_steps

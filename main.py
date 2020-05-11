@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Sun May 10 21:49:15 2020
-
-@author: yadu
-"""
 
 import sys
 import argparse
@@ -17,7 +12,7 @@ from Visualizer import *
 
 def main():
     
-    n = 100
+    n = 5
     obstacles = []
     start = [int(n/2), 0]
     goal = [int(n/2), int(n - 1)]
@@ -34,9 +29,8 @@ def main():
     start = (0, 0)
     goal = (0, n - 1)
     
-    path, num_expanded = DijkstraSolver(map, start, goal)
-    display_solution(path, map, start, goal)
-
+    path, num_expanded, solver_steps = DijkstraSolver(map, start, goal)
+    display_solution(path, solver_steps, map, start, goal)
     if path:
         print(f'Path found from {start} to {goal} after expanding {num_expanded} nodes!')
         print(f'Path: {path}')
