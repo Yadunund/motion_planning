@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import copy
 import numpy as np
 from Node import Node
 from OccupancyMap import OccupancyMap2D
 
 # return [path, number of expanded nodes, solver_steps]
-def DijkstraSolver(map, start, goal):
+def DijkstraSolver(map, start, goal, performance = False):
     path = []   
     n_rows = map.n_rows
     n_cols = map.n_cols
@@ -39,7 +40,7 @@ def DijkstraSolver(map, start, goal):
         # print(f'    Expanding node {node.index} with distance {node.distance}')
         # todo cache neighbors
         neighbors = map.get_neighbors(node.index)
-        solver_steps.append({node.index:neighbors})
+        # solver_steps.append({node.index:neighbors})
         # print(f'node {node.index}: {neighbors}')
         for neighbor in neighbors:
             # print(f'        found neighbor {neighbor}')
@@ -60,6 +61,8 @@ def DijkstraSolver(map, start, goal):
                     # print(f'            appending unvisited {neighbor} with distance {node.distance + 1}')
 
         expanded_nodes[node.index] = node
+        if not performance:
+            solver_steps.append({node.index:copy.deepcopy(expanded_nodes)})
 
     # once we are done exploring, we check if path was found
     if goal in expanded_nodes:

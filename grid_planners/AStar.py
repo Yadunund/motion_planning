@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+import copy
 import numpy as np
 from Node import Node
 from OccupancyMap import OccupancyMap2D
@@ -9,7 +10,7 @@ def H(start, goal):
   return np.sqrt((goal[0] - start[0])**2 + (goal[1] - start[1])**2)
 
 # return [path, number of expanded nodes, solver_steps]
-def AStarSolver(map, start, goal):
+def AStarSolver(map, start, goal, performance=False):
     path = []   
     n_rows = map.n_rows
     n_cols = map.n_cols
@@ -39,14 +40,13 @@ def AStarSolver(map, start, goal):
         min_index = start
         min_value = np.inf
         for i in node_queue.keys():
-          if node_queue[i].f < min_value:
+          if node_queue[i].f <= min_value:
             min_value = node_queue[i].f
             min_index = i
         
         node = node_queue.pop(min_index)
         # print(f'    Expanding node {node.index} with f-value {node.f}')
         neighbors = map.get_neighbors(node.index)
-        solver_steps.append({node.index:neighbors})
 
         for neighbor in neighbors:
             if neighbor == goal:
@@ -68,8 +68,9 @@ def AStarSolver(map, start, goal):
                 nodes[neighbor] = neighbor_node
 
         expanded_nodes.append(node.index)
+        if not performance:
+            solver_steps.append({node.index:copy.deepcopy(expanded_nodes)})
 
-    
     if found:
       node = nodes[goal]
       print(f'    Found goal {goal} with distance {node.distance} and f {node.f}')

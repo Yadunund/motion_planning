@@ -53,7 +53,7 @@ def main():
     else:
         print(f'No path found from {start} to {goal}')
 
-    display_solution(path, solver_steps, map, start, goal)
+    display_solution(path, solver_steps, map, start, goal, algorithm)
 
 if __name__ == '__main__':
     main()
