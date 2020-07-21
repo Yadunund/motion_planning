@@ -1,9 +1,6 @@
 import numpy as np
 
 class Point:
-    self.x = 0
-    self.y = 0
-    self.z = 0
     def __init__(self, x, y, z=0):
         self.x = x
         self.y = y

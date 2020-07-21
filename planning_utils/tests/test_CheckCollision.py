@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 
-from motion_planning.planning_utils.CheckCollision import CheckCollision
-from ..polygon import Polygon
-from ..point import Point
+from motion_planning.planning_utils.point import Point
+from motion_planning.planning_utils.polygon import Polygon
+from motion_planning.planning_utils.point import Point
 
 def main():
     p = Point(5, 5)
