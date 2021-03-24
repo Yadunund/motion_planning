@@ -21,19 +21,21 @@ def main():
     n = max(args.n, 5)
     algorithm = args.algorithm
 
-    obstacles = []
-    start = [int(n/2), 0]
-    goal = [int(n/2), int(n - 1)]
-    
-    # create a wall down the middle of the map
-    for i in range(int(n/2)):
+    obstacles = []   
+    # create a wall 3/4 down the middle of the map
+    v_wall_index = int(n * 0.75)
+    for i in range(v_wall_index):
         obstacles.append([i, int(n/2)])
+    
+    # create a horizontal wall
+    v_wall_index = min(v_wall_index, n - 1)
+    for i in range(int(n/2), n - 2):
+        obstacles.append([v_wall_index, i])
 
     map = OccupancyMap2D(n, n, obstacles)
-    # start = (5, 1)
-    # goal = (7, 8)
+
     start = (0, 0)
-    goal = (0, n - 1)
+    goal = (0, int(0.75 * n))
     
     # result variables
     path = []
