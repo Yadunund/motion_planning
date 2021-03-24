@@ -15,6 +15,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-n', '--n', default=10, help='Dimension of map',type= int)
     parser.add_argument('-a', '--algorithm', default='astar', help='Algorithm to use (astar, dijkstras)', type=str)
+    parser.add_argument('--animate', action='store_true', default=False)
     args = parser.parse_args(sys.argv[1:])
 
     n = max(args.n, 5)
@@ -39,10 +40,12 @@ def main():
     num_expanded = 0
     solver_steps = []
 
+    performance = not args.animate
+
     if algorithm == 'dijkstras':
-        path, num_expanded, solver_steps = DijkstraSolver(map, start, goal)
+        path, num_expanded, solver_steps = DijkstraSolver(map, start, goal, performance)
     elif algorithm == 'astar':
-        path, num_expanded, solver_steps = AStarSolver(map, start, goal)
+        path, num_expanded, solver_steps = AStarSolver(map, start, goal, performance)
     else:
         print("Usage error: Supported algorithms are dijkstras and astar")
         return
@@ -53,7 +56,7 @@ def main():
     else:
         print(f'No path found from {start} to {goal}')
 
-    display_solution(path, solver_steps, map, start, goal, algorithm)
+    display_solution(path, solver_steps, map, start, goal, algorithm, args.animate)
 
 if __name__ == '__main__':
     main()

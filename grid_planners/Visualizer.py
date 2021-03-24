@@ -28,7 +28,7 @@ def get_grid(map):
         
     return fig, ax
     
-def display_solution(path, solver_steps, map, start, goal, parent=''):
+def display_solution(path, solver_steps, map, start, goal, parent='', steps=False):
     map_copy = copy.deepcopy(map)
     n_rows = map.n_rows
     n_cols = map.n_cols
@@ -46,7 +46,8 @@ def display_solution(path, solver_steps, map, start, goal, parent=''):
     ax[0].imshow(map_copy.map, interpolation = 'none', cmap = cmap, extent = [0, n_rows, 0, n_cols], zorder = 0)
 
     # Visualizing solver
-    ani = FuncAnimation(fig, animate, frames = solver_steps[:len(solver_steps) - 1], fargs = [map, ax[1]], repeat= True, interval = 100)
+    if (steps):
+        ani = FuncAnimation(fig, animate, frames = solver_steps[:len(solver_steps) - 1], fargs = [map, ax[1]], repeat= True, interval = 100)
     plt.show()
 
 def animate(step, map, ax):

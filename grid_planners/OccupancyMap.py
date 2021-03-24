@@ -42,6 +42,26 @@ class OccupancyMap2D:
         j = index[1] + 1
         if j < self.n_cols and self.map[i][j] == 0:
             neighbors.append((i, j))
+        # NE
+        i = index[0] - 1
+        j = index[1] + 1
+        if i >= 0 and j < self.n_cols and self.map[i][j] == 0:
+            neighbors.append((i, j))
+        # SE
+        i = index[0] + 1
+        j = index[1] + 1
+        if i < self.n_rows and j < self.n_cols and self.map[i][j] == 0:
+            neighbors.append((i, j))
+        # SW
+        i = index[0] + 1
+        j = index[1] - 1
+        if i < self.n_rows and j >= 0 and self.map[i][j] == 0:
+            neighbors.append((i, j))
+        # NW
+        i = index[0] - 1
+        j = index[1] - 1
+        if i >= 0 and j >=0 and self.map[i][j] == 0:
+            neighbors.append((i, j))
         
         return neighbors
     
