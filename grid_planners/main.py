@@ -9,7 +9,10 @@ import numpy as np
 from OccupancyMap import OccupancyMap2D
 from Dijkstra import DijkstraSolver
 from AStar import AStarSolver
+from RRT import RRTSolver
 from Visualizer import *
+
+import time
 
 def main():
     parser = argparse.ArgumentParser()
@@ -28,9 +31,9 @@ def main():
         obstacles.append([i, int(n/2)])
     
     # create a horizontal wall
-    v_wall_index = min(v_wall_index, n - 1)
-    for i in range(int(n/2), n - 2):
-        obstacles.append([v_wall_index, i])
+    # v_wall_index = min(v_wall_index, n - 1)
+    # for i in range(int(n/2), n - 2):
+    #     obstacles.append([v_wall_index, i])
 
     map = OccupancyMap2D(n, n, obstacles)
 
@@ -44,13 +47,18 @@ def main():
 
     performance = not args.animate
 
+    start_time = time.time()
     if algorithm == 'dijkstras':
         path, num_expanded, solver_steps = DijkstraSolver(map, start, goal, performance)
     elif algorithm == 'astar':
         path, num_expanded, solver_steps = AStarSolver(map, start, goal, performance)
+    elif algorithm == 'rrt':
+        path, num_expanded, solver_steps = RRTSolver(map, start, goal)
     else:
-        print("Usage error: Supported algorithms are dijkstras and astar")
+        print("Usage error: Supported algorithms are dijkstras, astar and rrt")
         return
+    end_time = time.time()
+    print(f"Solution found in {end_time - start_time} seconds")
 
     if path:
         print(f'Path found from {start} to {goal} after expanding {num_expanded} nodes!')

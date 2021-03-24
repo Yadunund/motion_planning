@@ -44,20 +44,20 @@ def DijkstraSolver(map, start, goal, performance = False):
         # print(f'node {node.index}: {neighbors}')
         for neighbor in neighbors:
             # print(f'        found neighbor {neighbor}')
-            if neighbor == goal:
+            if neighbor[0] == goal:
                 found = True
-                expanded_nodes[neighbor] = Node(neighbor, node.distance + 1, node)
+                expanded_nodes[neighbor[0]] = Node(neighbor[0], node.distance + neighbor[1], node)
                 break
             
-            if neighbor in expanded_nodes:
+            if neighbor[0] in expanded_nodes:
                 # print(f'            previously visited {expanded_nodes[neighbor].index}')
                 # we do not expect this to happen with the grid map
-                if expanded_nodes[neighbor].distance > node.distance + 1:
-                    expanded_nodes[neighbor].distance = node.distance + 1
-                    expanded_nodes[neighbor].parent = node
+                if expanded_nodes[neighbor[0]].distance > node.distance + neighbor[1]:
+                    expanded_nodes[neighbor[0]].distance = node.distance + neighbor[1]
+                    expanded_nodes[neighbor[0]].parent = node
             else:
-                if neighbor not in [n.index for n in node_queue]:
-                    node_queue.append(Node(neighbor, node.distance + 1, node))
+                if neighbor[0] not in [n.index for n in node_queue]:
+                    node_queue.append(Node(neighbor[0], node.distance + neighbor[1], node))
                     # print(f'            appending unvisited {neighbor} with distance {node.distance + 1}')
 
         expanded_nodes[node.index] = node

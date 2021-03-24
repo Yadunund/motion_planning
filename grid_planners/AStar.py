@@ -43,29 +43,30 @@ def AStarSolver(map, start, goal, performance=False):
           if node_queue[i].f <= min_value:
             min_value = node_queue[i].f
             min_index = i
-        
+
         node = node_queue.pop(min_index)
+
         # print(f'    Expanding node {node.index} with f-value {node.f}')
         neighbors = map.get_neighbors(node.index)
 
         for neighbor in neighbors:
-            if neighbor == goal:
+            if neighbor[0] == goal:
                 found = True
-                nodes[goal] = Node(goal, node.distance + 1, node, H(neighbor, goal))
+                nodes[goal] = Node(goal, node.distance + neighbor[1], node, node.distance + neighbor[1] + H(neighbor[0], goal))
                 break
-            if neighbor in nodes.keys():
-                if nodes[neighbor].distance > node.distance + 1:
-                    nodes[neighbor].distance = node.distance + 1
-                    nodes[neighbor].f = node.distance + 1 + H(neighbor, goal)
-                    nodes[neighbor].parent = node
-                    node_queue[neighbor] = nodes[neighbor]
+            if neighbor[0] in nodes.keys():
+                if nodes[neighbor[0]].distance > node.distance + neighbor[1]:
+                    nodes[neighbor[0]].distance = node.distance + neighbor[1]
+                    nodes[neighbor[0]].f = node.distance + neighbor[1] + H(neighbor[0], goal)
+                    nodes[neighbor[0]].parent = node
+                    node_queue[neighbor[0]] = nodes[neighbor[0]]
             else:
-                neighbor_node = Node(neighbor,
-                    node.distance + 1,
+                neighbor_node = Node(neighbor[0],
+                    node.distance + neighbor[1],
                     node,
-                    node.distance + 1 + H(neighbor, goal))
-                node_queue[neighbor] = neighbor_node
-                nodes[neighbor] = neighbor_node
+                    node.distance + neighbor[1] + H(neighbor[0], goal))
+                node_queue[neighbor[0]] = neighbor_node
+                nodes[neighbor[0]] = neighbor_node
 
         expanded_nodes.append(node.index)
         if not performance:
@@ -74,12 +75,12 @@ def AStarSolver(map, start, goal, performance=False):
     if found:
       node = nodes[goal]
       print(f'    Found goal {goal} with distance {node.distance} and f {node.f}')
-      while (node.index != start):
+      while (node.parent != None):
             path.append(node.index)
-            node = node.parent        
+            node = node.parent   
+      
+      path.append(start)
     
-      path.append(start_node.index)
-
     path.reverse()
     num_expanded = len(expanded_nodes)
     

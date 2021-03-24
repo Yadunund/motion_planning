@@ -29,6 +29,7 @@ def get_grid(map):
     return fig, ax
     
 def display_solution(path, solver_steps, map, start, goal, parent='', steps=False):
+    plt.close('all')
     map_copy = copy.deepcopy(map)
     n_rows = map.n_rows
     n_cols = map.n_cols
