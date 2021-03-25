@@ -41,6 +41,7 @@ def RRTSolver(map, start, goal, performance=False):
     sampled_nodes.append(start_node)
 
     while (not found):
+        print (n)
         n = n + 1
         random_index = map.random_sample()
         # Check if collision

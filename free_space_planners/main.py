@@ -18,16 +18,16 @@ def main():
     map_obstacles = []
 
     map = Map(width=map_width, height=map_height, obstacles=map_obstacles)
-    start_time = time.time()
-    if algorithm == 'rrt':
-        path, num_expanded, solver_steps = RRTSolver(map, start, goal)
-    elif algorithm == 'rrtstar':
-        path, num_expanded, solver_steps = RRTStarSolver(map, start, goal)
-    else:
-        print("Usage error: Supported algorithms are dijkstras, astar and rrt")
-        return
-    end_time = time.time()
-    print(f"Solution found in {end_time - start_time} seconds")
+    # start_time = time.time()
+    # if algorithm == 'rrt':
+    #     path, num_expanded, solver_steps = RRTSolver(map, start, goal)
+    # elif algorithm == 'rrtstar':
+    #     path, num_expanded, solver_steps = RRTStarSolver(map, start, goal)
+    # else:
+    #     print("Usage error: Supported algorithms are dijkstras, astar and rrt")
+    #     return
+    # end_time = time.time()
+    # print(f"Solution found in {end_time - start_time} seconds")
 
 if __name__ == '__main__':
     main()
