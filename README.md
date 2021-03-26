@@ -7,12 +7,12 @@ Here we compare the performance of Dijkstras and AStar algorithms in finding a p
 
 usage:
 ```
-./grid_planners/main -h
+python3 grid_planners/main.py -h
 ```
 
 #### Path planning with Dijkstras algorithm on a 2D grid
 ```
-./grid_planners/main -n 10 -a dijsktras
+python3 grid_planners/main -n 10 -a dijsktras
 ```
 
 ![](media/dijkstras.png)
@@ -28,7 +28,7 @@ Path: [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (5, 1), (5, 2), (5, 3), (
 #### Path planning with Astar algorithm on a 2D grid
 
 ```
-./grid_planners/main -n 10 -a astar
+python3 grid_planners/main -n 10 -a astar
 ```
 
 ![](media/astar.png)
@@ -42,4 +42,19 @@ Path: [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (1, 4), (2, 4), (3, 4), (4, 4), (
 
 
 ```
+
+## Free space planners
+
+usage:
+```
+python3 free_space_planners/main.py -h
+```
+
+### Path planning with RRT in free space with obstacles
+
+```
+python3 free_space_planners/main.py -a rrt
+```
+
+![](media/rrt.png)
 

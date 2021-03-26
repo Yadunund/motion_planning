@@ -24,7 +24,7 @@ def dist(a:list, b:list):
     return math.sqrt((a[0]-b[0])**2 + (a[1]-b[1])**2)
 
 def RRTSolver(map:Map, start:list, goal:list, steps=False):
-    goal_radius = 1.0 # meters
+    goal_radius = 0.5 # meters
     max_step = 1.0
   
     if in_collision(start, map):
@@ -40,22 +40,24 @@ def RRTSolver(map:Map, start:list, goal:list, steps=False):
     
     path = []
     num_expanded = 0
-    expanded_nodes = []
+    expanded_nodes = {}
 
     root = SearchNode(start)
-    expanded_nodes.append(root)
-    tree = KdTree(root)
+    expanded_nodes[(root.position[0], root.position[1])] = root
+    tree = KdTree(start)
 
     goal_node = None
     found = False
     while (not found):
         num_expanded = num_expanded + 1
-        new_node = SearchNode(map.random_position())
+        random_position = map.random_position()
+        new_node = SearchNode(random_position)
         # print(f"Random new node generated with position {new_node.position}")
         if (in_collision(new_node.position, map)):
             continue
         # get nearest node
-        nearest_node = tree.nearest_node(new_node)
+        nearest_position = tree.nearest_position(new_node.position)
+        nearest_node = expanded_nodes[(nearest_position[0], nearest_position[1])]
         # print(f"Found nearest node with position {nearest_node.position}")
         # check if new_node is within step distance from nearest_node
         distance = dist(new_node.position, nearest_node.position)
@@ -72,13 +74,13 @@ def RRTSolver(map:Map, start:list, goal:list, steps=False):
             # assert( new_dist <= max_step)
             new_node.position = new_point
             new_node.distance = new_dist + nearest_node.distance
-            print(f"nearest_node.distance: {nearest_node.distance}")
+            # print(f"nearest_node.distance: {nearest_node.distance}")
             # print(f"    Position of new node corrected to {new_node.position} with distance {new_dist}")
         if (in_collision(new_node.position, map)):
             continue
-        print(f" new_node is {new_node.distance} away from start")
+        # print(f" new_node is {new_node.distance} away from start")
         new_node.parent = nearest_node
-        expanded_nodes.append(new_node)
+        expanded_nodes[(new_node.position[0], new_node.position[1])] = new_node
 
         # check if new_node is within goal boundary
         dist_to_goal = dist(new_node.position, goal)
@@ -88,11 +90,11 @@ def RRTSolver(map:Map, start:list, goal:list, steps=False):
             found = True
 
         # add new node to tree
-        tree.add(new_node)
-        print(f"num_expanded: {num_expanded}")
+        tree.add(new_node.position)
+        # print(f"num_expanded: {num_expanded}")
 
     if (goal_node):
-        print(f"Path from {start} to {goal} found with distance {goal_node.distance}")
+        print(f"Path from {start} to {goal} found with distance {goal_node.distance} after expanding {num_expanded} nodes")
         node = goal_node
         while (node.parent != None):
             path.append(node.position)

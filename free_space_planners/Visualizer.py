@@ -6,17 +6,18 @@ from matplotlib.animation import FuncAnimation
 from Map import Map
 from Obstacle import Obstacle
 
-def display_solution(map:Map, start:list, goal:list, path:list, expanded_nodes:list, parent=''):
+def display_solution(map:Map, start:list, goal:list, path:list, expanded_nodes:dict, parent=''):
     fig = plt.figure(figsize=(10,10), dpi=100)
     plt.xlim([0, map.width])
     plt.ylim([0, map.height])
+    plt.title(f"Path planning with {parent} algorithm")
     for obstacle in map.obstacles:
         polygon = plt.Polygon(obstacle.shape.points, True)
         plt.gca().add_line(polygon)
 
     # plot the expansion
-    for node in expanded_nodes:
-        plt.plot([node.position[0]], [node.position[1]], 'ro')
+    for position, node in expanded_nodes.items():
+        plt.plot([position[0]], [position[1]], 'ro')
         if node.parent is not None:
             edge = [node.position, node.parent.position]
             line = plt.Polygon(edge, closed=None, fill=None, edgecolor='r')

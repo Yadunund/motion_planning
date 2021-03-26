@@ -41,15 +41,15 @@ def main():
 
     #KdTree
     start_time = time.time()
-    t = KdTree(SearchNode(points[0]))
+    t = KdTree(points[0])
     for i in range(1, len(points)):
-        t.add(SearchNode(points[i]))
+        t.add(points[i])
     end_time = time.time()
     print(f"KdTree constructed in {end_time-start_time}s")
     start_time = time.time()
-    nearest_node = t.nearest_node(SearchNode(s))
+    nearest_position = t.nearest_position(s)
     end_time = time.time()
-    print(f"KdTree solution: {nearest_node.position} found in {end_time-start_time}s")
+    print(f"KdTree solution: {nearest_position} found in {end_time-start_time}s")
 
 
 if __name__ == '__main__':
