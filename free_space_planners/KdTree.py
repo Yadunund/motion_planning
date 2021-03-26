@@ -10,13 +10,13 @@ class KdTree:
         axis = depth % self.k
         if root.position[axis] > node.position[axis]: # we want to insert to the left
             if root.left == None:
-                root.left = SearchNode(node.position, root)
+                root.left = SearchNode(node.position, root, node.distance)
                 return
             else: # Node already exists, recurse
                 self.__add(node, root.left, depth + 1)
         else:
             if root.right == None:
-                root.right = SearchNode(node.position, root)
+                root.right = SearchNode(node.position, root, node.distance)
                 return
             else:
                 self.__add(node, root.right, depth + 1)
@@ -77,3 +77,4 @@ class KdTree:
         root = self.root
         depth = 0
         return self.__nearest_node(root, node, depth)
+    
