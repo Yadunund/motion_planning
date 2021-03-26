@@ -26,8 +26,12 @@ def main():
     
     ob1 = Obstacle(ConvexShape([[25,40], [50, 60], [80, 40]]))
     ob2 = Obstacle(ConvexShape([[10,50], [10, 90], [30, 70]]))
+    ob3 = Obstacle(ConvexShape([[55,95], [55, 60], [60, 60]]))
+    ob4 = Obstacle(ConvexShape([[50,20], [65, 30], [80, 20]]))
     map_obstacles.append(ob1)
     map_obstacles.append(ob2)
+    map_obstacles.append(ob3)
+    map_obstacles.append(ob4)
     map = Map(width=map_width, height=map_height, obstacles=map_obstacles)
     
     start_time = time.time()
