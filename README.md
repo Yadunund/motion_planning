@@ -56,6 +56,9 @@ python3 free_space_planners/main.py -h
 python3 free_space_planners/main.py -a rrt
 ```
 
+![](media/rrt.png)
+
+
 ### Path planning with RRT* in free space with obstacles
 
 ```
@@ -63,5 +66,5 @@ python3 free_space_planners/main.py -a rrtstar
 ```
 
 
-![](media/rrtstar.png.png)
+![](media/rrtstar.png)
 
