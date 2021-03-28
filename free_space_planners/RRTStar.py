@@ -8,9 +8,10 @@ import math
 import threading
 import time
 
-def RRTSolver(map:Map, start:list, goal:list, steps=False):
-    goal_radius = 1.0 # meters
+def RRTStarSolver(map:Map, start:list, goal:list, steps=False):
+    goal_radius = 0.5 # meters
     max_step = 2.0
+    neighborhood = 10.0
   
     if in_point_collision(start, map):
         print(f"[error] start {start} is on an obstacle")
@@ -26,6 +27,7 @@ def RRTSolver(map:Map, start:list, goal:list, steps=False):
     path = []
     num_expanded = 0
     expanded_nodes = {}
+    n = 15000
 
     root = SearchNode(start)
     expanded_nodes[(root.position[0], root.position[1])] = root
@@ -33,7 +35,7 @@ def RRTSolver(map:Map, start:list, goal:list, steps=False):
 
     goal_node = None
     found = False
-    while (not found):
+    while (num_expanded < n):
         num_expanded = num_expanded + 1
         random_position = map.random_position()
         new_node = SearchNode(random_position)
@@ -44,9 +46,10 @@ def RRTSolver(map:Map, start:list, goal:list, steps=False):
         nearest_position = tree.nearest_position(new_node.position)
         nearest_node = expanded_nodes[(nearest_position[0], nearest_position[1])]
 
-        # check if new_node is within step distance from nearest_node
         distance = dist(new_node.position, nearest_node.position)
         new_node.distance = distance + nearest_node.distance
+
+        # check if new_node is within step distance from nearest_node
         collision_flag = False
         if distance > max_step:
             x1, y1 = nearest_node.position
@@ -64,7 +67,26 @@ def RRTSolver(map:Map, start:list, goal:list, steps=False):
         if collision_flag:
             continue
 
+        # Assign parent based on lowest distance among neighborhood points
         new_node.parent = nearest_node
+        surrounding_positions = tree.surrounding_positions(new_node.position, neighborhood)
+        for position in surrounding_positions:
+            node = expanded_nodes[(position[0], position[1])]
+            neighbor_distance = dist(new_node.position, node.position)
+            if node.distance + neighbor_distance < new_node.distance:
+                if not in_line_collision([node.position, new_node.position], map):
+                    new_node.parent = node
+                    new_node.distance = node.distance + neighbor_distance
+
+        # Rewire surrounding nodes to new_node if feasible
+        for position in surrounding_positions:
+            node = expanded_nodes[(position[0], position[1])]
+            neighbor_distance = dist(new_node.position, node.position)
+            if new_node.distance + neighbor_distance < node.distance:
+                if not in_line_collision([node.position, new_node.position], map):
+                    node.parent = new_node
+                    node.distance = new_node.distance + neighbor_distance
+        
         expanded_nodes[(new_node.position[0], new_node.position[1])] = new_node
 
         # check if new_node is within goal boundary

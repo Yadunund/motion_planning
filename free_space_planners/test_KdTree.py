@@ -23,7 +23,10 @@ def main():
         points.append([x, y])
         
     s = [random.randint(0,100), random.randint(0, 100)]
+    s = set(s)
+    s = list(s)
 
+    # FINDING NEAREST NEIGHBOR
     # navie appraoch
     min_dist = np.inf
     nearest_pt = None
@@ -36,7 +39,7 @@ def main():
             nearest_pt = p
     assert(nearest_pt)
     end_time = time.time()
-    print(f"Navie solution: {nearest_pt} found in {end_time-start_time}s")
+    print(f"Naive solution: {nearest_pt} found in {end_time-start_time}s")
 
 
     #KdTree
@@ -50,6 +53,29 @@ def main():
     nearest_position = t.nearest_position(s)
     end_time = time.time()
     print(f"KdTree solution: {nearest_position} found in {end_time-start_time}s")
+
+    # FINDING NEAREST NEIGHBORS AT DISTANCE K
+    distance = 5.0
+    print(f"Nearest neighbors at distance {distance}")
+    
+    # naive approach
+    nearest_points_naive = []
+    start_time = time.time()
+    for p in points:
+        d = dist(p, s)
+        if d <= distance:
+            nearest_points_naive.append(p)
+    end_time = time.time()
+    print(f"Naive solution found {len(nearest_points_naive)} points in {end_time-start_time}s")
+    print(nearest_points_naive)
+
+    start_time = time.time()
+    nearest_points_tree = t.surrounding_positions(s, distance)
+    end_time = time.time()
+    print(f"KdTree solution found in {len(nearest_points_tree)} points in {end_time - start_time}s")
+    print(nearest_points_tree)
+    for p in nearest_points_tree:
+        assert(dist(p, s) <= distance)
 
 
 if __name__ == '__main__':

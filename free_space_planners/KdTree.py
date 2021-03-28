@@ -11,6 +11,8 @@ class KdTree:
     def __init__(self, position:list):
       self.root = Node(position)
       self.k = len(self.root.position)
+      # used for neighborhood search
+      self.nearest_positions = []
 
     def __add(self, position:list, root:Node, depth):
         axis = depth % self.k
@@ -84,3 +86,24 @@ class KdTree:
         depth = 0
         return self.__nearest_position(root, position, depth).position
     
+
+    def __surrounding_positions(self, root:Node, position, distance, depth):
+        if root is None:
+            return None
+
+        if self.__dist(position, root.position) <= distance:
+            self.nearest_positions.append(root.position)
+        
+        axis = depth % self.k
+        next_root = root.right
+        if position[axis] < root.position[axis]:
+            next_root = root.left
+        self.__surrounding_positions(next_root, position, distance, depth + 1)        
+        
+
+    def surrounding_positions(self, position, distance):
+        root = self.root
+        depth = 0
+        self.nearest_positions = []
+        self.__surrounding_positions(root, position, distance, depth)
+        return self.nearest_positions

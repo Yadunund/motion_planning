@@ -9,6 +9,7 @@ from Map import Map
 from Shape import ConvexShape
 from Obstacle import Obstacle
 from RRT import RRTSolver
+from RRTStar import RRTStarSolver
 
 from Visualizer import display_solution
 
@@ -34,11 +35,12 @@ def main():
     map_obstacles.append(ob4)
     map = Map(width=map_width, height=map_height, obstacles=map_obstacles)
     
+    print(f'Solving using {args.algorithm}...')
     start_time = time.time()
     if args.algorithm == 'rrt':
         path, num_expanded, expanded_nodes = RRTSolver(map, start, goal)
-    # elif args.algorithm == 'rrtstar':
-    #     path, num_expanded, solver_steps = RRTStarSolver(map, start, goal)
+    elif args.algorithm == 'rrtstar':
+        path, num_expanded, expanded_nodes = RRTStarSolver(map, start, goal)
     else:
         print("Usage error: Supported algorithms are rrt")
         return
