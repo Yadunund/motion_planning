@@ -76,6 +76,8 @@ def main():
     print(nearest_points_tree)
     for p in nearest_points_tree:
         assert(dist(p, s) <= distance)
+    for p in nearest_points_naive:
+        assert p in nearest_points_tree
 
 
 if __name__ == '__main__':

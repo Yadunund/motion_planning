@@ -14,6 +14,7 @@ def orientation(p1, p2, p3):
     else:
         return 2 # clockwise
 
+
 def colinear(p1, p2, p3):
     ''' Check if p1 lies on line segment p2p3'''
     return (p1[0] <= max(p2[0], p3[0])) and (p1[0] >= min(p2[0], p3[0]))\
@@ -31,9 +32,13 @@ def LineLineCollision(l1:list, l2:list):
 
     o1 = orientation(p2, p1, q1)
     o2 = orientation(q2, p1, q1)
+    if (o1 == o2):
+        return False
     o3 = orientation(p1, p2, q2)
     o4 = orientation(p2, p2, q2)
-
+    if (o3 == o4):
+        return False
+  
     if (o1 != o2 and o3 != o4):
         return True
     

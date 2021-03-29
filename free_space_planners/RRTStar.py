@@ -8,11 +8,19 @@ import math
 import threading
 import time
 
+def naive_surrounding_positions(position, distance, expanded_nodes):
+    surrounding_positions = []
+    for p, n in expanded_nodes.items():
+        if dist(n.position, position) <= distance:
+            surrounding_positions.append(n.position)
+    return surrounding_positions
+
 def RRTStarSolver(map:Map, start:list, goal:list, steps=False):
-    goal_radius = 0.5 # meters
+    goal_radius = 1.0 # meters
     max_step = 2.0
     neighborhood = 10.0
-  
+    n = 15000
+
     if in_point_collision(start, map):
         print(f"[error] start {start} is on an obstacle")
         return
@@ -27,7 +35,6 @@ def RRTStarSolver(map:Map, start:list, goal:list, steps=False):
     path = []
     num_expanded = 0
     expanded_nodes = {}
-    n = 15000
 
     root = SearchNode(start)
     expanded_nodes[(root.position[0], root.position[1])] = root
@@ -35,7 +42,7 @@ def RRTStarSolver(map:Map, start:list, goal:list, steps=False):
 
     goal_node = None
     found = False
-    while (num_expanded < n):
+    while (num_expanded < n or not found):
         num_expanded = num_expanded + 1
         random_position = map.random_position()
         new_node = SearchNode(random_position)
@@ -61,14 +68,15 @@ def RRTStarSolver(map:Map, start:list, goal:list, steps=False):
             new_dist = dist(new_point, nearest_node.position)
             new_node.position = new_point
             new_node.distance = new_dist + nearest_node.distance
-            collision_flag = in_line_collision([new_node.position, nearest_node.position], map)
-            # collision_flag = in_point_collision(new_node.position, map)
+            # collision_flag = in_line_collision([new_node.position, nearest_node.position], map)
+            collision_flag = in_point_collision(new_node.position, map)
 
         if collision_flag:
             continue
 
         # Assign parent based on lowest distance among neighborhood points
         new_node.parent = nearest_node
+        # surrounding_positions = naive_surrounding_positions(new_node.position, neighborhood, expanded_nodes)
         surrounding_positions = tree.surrounding_positions(new_node.position, neighborhood)
         for position in surrounding_positions:
             node = expanded_nodes[(position[0], position[1])]

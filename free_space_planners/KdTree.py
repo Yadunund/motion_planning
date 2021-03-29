@@ -96,8 +96,16 @@ class KdTree:
         
         axis = depth % self.k
         next_root = root.right
+        opposite_root = root.left
+
         if position[axis] < root.position[axis]:
             next_root = root.left
+            opposite_root = root.right
+
+        if opposite_root is not None:
+            if self.__dist(position, opposite_root.position) <= distance:
+                self.nearest_positions.append(opposite_root.position)
+
         self.__surrounding_positions(next_root, position, distance, depth + 1)        
         
 
