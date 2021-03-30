@@ -1,5 +1,33 @@
 from Shape import ConvexShape
 
+class BoundingBox:
+    def __init__(self, min:list, max:list):
+        self.x_min = min[0]
+        self.y_min = min[1]
+        self.x_max = max[0]
+        self.y_max = max[1]
+
+def get_bounding_box(points:list):
+    x = []
+    y = []
+    for p in points:
+        x.append(p[0])
+        y.append(p[1])
+    return BoundingBox([min(x), min(y)], [max(x), max(y)])
+
+def BroadPhaseAABB(box1:BoundingBox, box2:BoundingBox):
+
+    if box1.x_max < box2.x_min:
+        return False
+    if box2.x_max < box1.x_min:
+        return False
+    if box1.y_max < box2.y_min:
+        return False
+    if box2.y_max < box1.y_min:
+        return False
+
+    return True
+
 def sign (p1, p2, p3):
     # Cross product of (p1 - p3) x (p2 - p3)
     return (p1[0] - p3[0]) * (p2[1] - p3[1]) - (p2[0] - p3[0]) * (p1[1] - p3[1])
@@ -56,6 +84,13 @@ def LineLineCollision(l1:list, l2:list):
 def TrainglePointCollision(triangle:ConvexShape, p:list):
     assert(triangle.size() == 3)
     assert(len(p) > 1)
+
+    box = get_bounding_box(triangle.points)
+    x, y = p
+    broad_phase = (x > box.x_min and x < box.x_max) and (y > box.y_min and y < box.y_max)
+    if not broad_phase:
+        return False
+
     # we use half plane method to determine if point lies inside the triangle
     # https://stackoverflow.com/questions/2049582/how-to-determine-if-a-point-is-in-a-2d-triangle
     points = triangle.points
@@ -76,6 +111,13 @@ def TrainglePointCollision(triangle:ConvexShape, p:list):
 def TriangleLineCollision(triangle:ConvexShape, l:list):
     assert(triangle.size() == 3)
     assert(len(l) > 1 and len(l[0]) > 1)
+
+    box1 = get_bounding_box(triangle.points)
+    box2 = get_bounding_box(l)
+
+    if not BroadPhaseAABB(box1, box2):
+        return False
+
     v1 = triangle.points[0]
     v2 = triangle.points[1]
     v3 = triangle.points[2]
