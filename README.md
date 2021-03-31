@@ -10,6 +10,30 @@ usage:
 python3 grid_planners/main.py -h
 ```
 
+
+<div align=right>
+<table>
+  <tr>
+    <td><img src="https://github.com/Yadunund/motion_planning/blob/master/media/dijkstras.png" alt="dijkstra" width="400"/></a></td>
+    <td><img src="https://github.com/Yadunund/motion_planning/blob/master/media/astar.png" alt="astar" width="400"/></a></td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <td>
+        ```
+        python3 grid_planners/main -n 10 -a dijsktras
+        ```
+    </td>
+    <td>
+        ```
+        python3 grid_planners/main -n 10 -a astar
+        ```
+    </td>
+  </tr>
+</table>
+</div>
+
 #### Path planning with Dijkstras algorithm on a 2D grid
 ```
 python3 grid_planners/main -n 10 -a dijsktras
