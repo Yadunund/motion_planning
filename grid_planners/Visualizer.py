@@ -9,6 +9,11 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 from OccupancyMap import OccupancyMap2D
 
+font = {'family' : 'DejaVu Sans',
+        'weight' : 'bold',
+        'size'   : 22}
+
+matplotlib.rc('font', **font)
 
 def get_grid(map):
     n_rows = map.n_rows
@@ -48,8 +53,9 @@ def display_solution(path, solver_steps, map, start, goal, parent='', steps=Fals
 
     # Visualizing solver
     if (steps):
-        ani = FuncAnimation(fig, animate, frames = solver_steps[:len(solver_steps) - 1], fargs = [map, ax[1]], repeat= True, interval = 100)
-    plt.show()
+        ani = FuncAnimation(fig, animate, frames = solver_steps[:len(solver_steps) - 1], fargs = [map, ax[1]], repeat= True, interval = 10)
+    plt.pause(0.01)
+    # plt.show()
 
 def animate(step, map, ax):
     # map_copy = copy.deepcopy(map)

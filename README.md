@@ -20,9 +20,11 @@ python3 grid_planners/main -n 10 -a dijsktras
 Terminal output:
 ```
 Solving using Dijkstras...
-    Found goal (0, 9) with distance 19
-Path found from (0, 0) to (0, 9) after expanding 93 nodes!
-Path: [(0, 0), (1, 0), (2, 0), (3, 0), (4, 0), (5, 0), (5, 1), (5, 2), (5, 3), (5, 4), (5, 5), (5, 6), (4, 6), (3, 6), (2, 6), (1, 6), (0, 6), (0, 7), (0, 8), (0, 9)]
+    Found goal (0, 7) with distance 16.898
+Solution found in 0.036817073822021484 seconds
+Path found from (0, 0) to (0, 7) after expanding 85 nodes!
+Path: [(0, 0), (1, 0), (2, 0), (3, 1), (4, 2), (5, 3), (6, 4), (7, 5), (6, 6), (5, 6), (4, 6), (3, 6), (2, 6), (1, 6), (0, 7)]
+
 ```
 
 #### Path planning with Astar algorithm on a 2D grid
@@ -36,9 +38,11 @@ python3 grid_planners/main -n 10 -a astar
 Terminal output:
 ```
 Solving using A*...
-    Found goal (0, 9) with distance 19 and f 0.0
-Path found from (0, 0) to (0, 9) after expanding 57 nodes!
-Path: [(0, 0), (0, 1), (0, 2), (0, 3), (0, 4), (1, 4), (2, 4), (3, 4), (4, 4), (5, 4), (5, 5), (5, 6), (4, 6), (3, 6), (3, 7), (2, 7), (2, 8), (1, 8), (1, 9), (0, 9)]
+    Found goal (0, 7) with distance 16.897
+Solution found in 0.0024843215942382812 seconds
+Path found from (0, 0) to (0, 7) after expanding 46 nodes!
+Path: [(0, 0), (1, 1), (2, 1), (3, 2), (4, 3), (5, 4), (6, 4), (7, 5), (6, 6), (5, 6), (4, 6), (3, 6), (2, 6), (1, 7), (0, 7)]
+
 
 
 ```
