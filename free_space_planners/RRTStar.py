@@ -17,9 +17,9 @@ def naive_surrounding_positions(position, distance, expanded_nodes):
 
 def RRTStarSolver(map:Map, start:list, goal:list, steps=False):
     goal_radius = 1.0 # meters
-    max_step = 2.0
-    neighborhood = 10.0
-    n = 15000
+    max_step = 10.0
+    neighborhood = 20.0
+    n = 2000
 
     if in_point_collision(start, map):
         print(f"[error] start {start} is on an obstacle")
@@ -57,7 +57,6 @@ def RRTStarSolver(map:Map, start:list, goal:list, steps=False):
         new_node.distance = distance + nearest_node.distance
 
         # check if new_node is within step distance from nearest_node
-        collision_flag = False
         if distance > max_step:
             x1, y1 = nearest_node.position
             x2, y2 = new_node.position
@@ -68,10 +67,8 @@ def RRTStarSolver(map:Map, start:list, goal:list, steps=False):
             new_dist = dist(new_point, nearest_node.position)
             new_node.position = new_point
             new_node.distance = new_dist + nearest_node.distance
-            # collision_flag = in_line_collision([new_node.position, nearest_node.position], map)
-            collision_flag = in_point_collision(new_node.position, map)
 
-        if collision_flag:
+        if in_line_collision([new_node.position, nearest_node.position], map):
             continue
 
         # Assign parent based on lowest distance among neighborhood points

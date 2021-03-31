@@ -10,7 +10,7 @@ import time
 
 def RRTSolver(map:Map, start:list, goal:list, steps=False):
     goal_radius = 1.0 # meters
-    max_step = 2.0
+    max_step = 10.0
   
     if in_point_collision(start, map):
         print(f"[error] start {start} is on an obstacle")
