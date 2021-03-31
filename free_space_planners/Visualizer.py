@@ -7,20 +7,20 @@ from Map import Map
 from Obstacle import Obstacle
 
 def display_solution(map:Map, start:list, goal:list, path:list, expanded_nodes:dict, parent=''):
-    fig = plt.figure(figsize=(10,10), dpi=100)
+    fig = plt.figure(figsize=(15,15), dpi=100)
     plt.xlim([0, map.width])
     plt.ylim([0, map.height])
-    plt.title(f"Path planning with {parent} algorithm")
+    plt.title(f"Path planning with {parent} algorithm", fontsize=28)
     for obstacle in map.obstacles:
         polygon = plt.Polygon(obstacle.shape.points, True)
         plt.gca().add_line(polygon)
 
     # plot the expansion
     for position, node in expanded_nodes.items():
-        plt.plot([position[0]], [position[1]], 'ro')
+        plt.plot([position[0]], [position[1]], 'go')
         if node.parent is not None:
             edge = [node.position, node.parent.position]
-            line = plt.Polygon(edge, closed=None, fill=None, edgecolor='r')
+            line = plt.Polygon(edge, closed=None, fill=None, edgecolor='g')
             plt.gca().add_line(line)
 
     if path:
@@ -28,7 +28,7 @@ def display_solution(map:Map, start:list, goal:list, path:list, expanded_nodes:d
       plt.gca().add_line(line)
 
     plt.plot([start[0]], [start[1]], 'yo') # start
-    plt.plot([goal[0]], [goal[1]], 'go')
+    plt.plot([goal[0]], [goal[1]], 'bo')
 
     plt.show()
 

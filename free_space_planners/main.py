@@ -19,16 +19,16 @@ def main():
     parser.add_argument('--animate', action='store_true', default=False)
     args = parser.parse_args(sys.argv[1:])
 
-    map_width = 100
-    map_height = 100
-    start = [10, 10]
-    goal = [75, 75]
+    map_width = 200
+    map_height = 200
+    start = [60, 80]
+    goal = [125, 125]
     map_obstacles = []
     
-    ob1 = Obstacle(ConvexShape([[25,40], [50, 60], [80, 40]]))
-    ob2 = Obstacle(ConvexShape([[10,50], [10, 90], [30, 70]]))
-    ob3 = Obstacle(ConvexShape([[55,60], [60, 95], [65, 60]]))
-    ob4 = Obstacle(ConvexShape([[50,20], [65, 30], [80, 20]]))
+    ob1 = Obstacle(ConvexShape([[75,90], [100, 110], [130, 90]]))
+    ob2 = Obstacle(ConvexShape([[60,110], [60, 140], [80, 120]]))
+    ob3 = Obstacle(ConvexShape([[85,115], [110, 160], [115, 115]]))
+    ob4 = Obstacle(ConvexShape([[140,100], [125, 120], [160, 100]]))
     map_obstacles.append(ob1)
     map_obstacles.append(ob2)
     map_obstacles.append(ob3)
@@ -41,6 +41,8 @@ def main():
         path, num_expanded, expanded_nodes = RRTSolver(map, start, goal)
     elif args.algorithm == 'rrtstar':
         path, num_expanded, expanded_nodes = RRTStarSolver(map, start, goal)
+    elif args.algorithm == 'irrtstar':
+          path, num_expanded, expanded_nodes = RRTStarSolver(map, start, goal, informed=True)
     else:
         print("Usage error: Supported algorithms are rrt")
         return

@@ -1,5 +1,5 @@
 class SearchNode:
-    def __init__(self, position:[], parent=None, distance=0, left=None, right=None):
+    def __init__(self, position:[], parent=None, distance=0):
         self.position = position
         self.parent = parent
         # keeping track of distance

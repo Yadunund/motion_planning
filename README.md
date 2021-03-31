@@ -55,6 +55,10 @@ python3 free_space_planners/main.py -h
 ```
 python3 free_space_planners/main.py -a rrt
 ```
+```
+Path from [60, 80] to [125, 125] found with distance 300.0416909239303 after expanding 6000 nodes
+ rrt ran for 0.28319501876831055s
+```
 
 ![](media/rrt.png)
 
@@ -65,6 +69,25 @@ python3 free_space_planners/main.py -a rrt
 python3 free_space_planners/main.py -a rrtstar
 ```
 
+```
+Path from [60, 80] to [125, 125] found with distance 196.7794119686563 after expanding 6000 nodes
+ rrtstar ran for 0.8356122970581055s
+```
 
 ![](media/rrtstar.png)
+
+### Path planning with Informed-RRT* in free space with obstacles
+
+```
+python3 free_space_planners/main.py -a irrtstar
+```
+
+```
+Path from [60, 80] to [125, 125] found with distance 142.9611450694058 after expanding 6000 nodes
+ irrtstar ran for 1.1094410419464111s
+
+```
+
+![](media/informed_rrtstar.png)
+
 

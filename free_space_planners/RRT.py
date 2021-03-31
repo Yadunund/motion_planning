@@ -9,8 +9,9 @@ import threading
 import time
 
 def RRTSolver(map:Map, start:list, goal:list, steps=False):
-    goal_radius = 1.0 # meters
+    goal_radius = 2.0 # meters
     max_step = 10.0
+    n = 6000
   
     if in_point_collision(start, map):
         print(f"[error] start {start} is on an obstacle")
@@ -33,7 +34,7 @@ def RRTSolver(map:Map, start:list, goal:list, steps=False):
 
     goal_node = None
     found = False
-    while (not found):
+    while (num_expanded < n):
         num_expanded = num_expanded + 1
         random_position = map.random_position()
         new_node = SearchNode(random_position)
