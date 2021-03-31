@@ -83,8 +83,8 @@ python3 free_space_planners/main.py -a irrtstar
 ```
 
 ```
-Path from [60, 80] to [125, 125] found with distance 142.9611450694058 after expanding 6000 nodes
- irrtstar ran for 1.1094410419464111s
+Path from [60, 80] to [125, 125] found with distance 94.11522314530042 after expanding 6000 nodes
+ irrtstar ran for 0.9090230464935303s
 
 ```
 
