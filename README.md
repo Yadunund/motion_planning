@@ -56,8 +56,8 @@ python3 free_space_planners/main.py -h
 python3 free_space_planners/main.py -a rrt
 ```
 ```
-Path from [60, 80] to [125, 125] found with distance 300.0416909239303 after expanding 6000 nodes
- rrt ran for 0.28319501876831055s
+Path from [15, 15] to [190, 190] found with distance 388.033102354826 after expanding 7000 nodes
+ rrt ran for 0.3900134563446045s
 ```
 
 ![](media/rrt.png)
@@ -70,8 +70,8 @@ python3 free_space_planners/main.py -a rrtstar
 ```
 
 ```
-Path from [60, 80] to [125, 125] found with distance 196.7794119686563 after expanding 6000 nodes
- rrtstar ran for 0.8356122970581055s
+Path from [15, 15] to [190, 190] found with distance 271.3592691760186 after expanding 7000 nodes
+ rrtstar ran for 1.7262961864471436s
 ```
 
 ![](media/rrtstar.png)
@@ -83,8 +83,8 @@ python3 free_space_planners/main.py -a irrtstar
 ```
 
 ```
-Path from [60, 80] to [125, 125] found with distance 94.11522314530042 after expanding 6000 nodes
- irrtstar ran for 0.9090230464935303s
+Path from [15, 15] to [190, 190] found with distance 256.3809869882846 after expanding 7000 nodes
+ irrtstar ran for 4.364379405975342s
 
 ```
 
