@@ -9,6 +9,9 @@ import numpy as np
 from KdTree import KdTree
 from Node import SearchNode
 
+# For benchmarking
+from scipy import spatial
+
 def dist(a, b):
     return np.sqrt((a[0]-b[0])**2 + (a[1] - b[1])**2)
 
@@ -18,15 +21,15 @@ def main():
     # generate n points
     points = []
     for i in range(n):
-        x = random.randint(0, 100)
-        y = random.randint(0, 100)
+        x = random.randint(-100, 100)
+        y = random.randint(-100, 100)
         points.append([x, y])
         
-    s = [random.randint(0,100), random.randint(0, 100)]
-    s = set(s)
-    s = list(s)
+    s = [random.randint(101,105), random.randint(101, 105)]
+    assert(s not in points)
 
     # FINDING NEAREST NEIGHBOR
+    print(f"Finding nearest neighbor of {s}")
     # navie appraoch
     min_dist = np.inf
     nearest_pt = None
@@ -43,6 +46,7 @@ def main():
 
 
     #KdTree
+    print("#######################")
     start_time = time.time()
     t = KdTree(points[0])
     for i in range(1, len(points)):
@@ -54,9 +58,22 @@ def main():
     end_time = time.time()
     print(f"KdTree solution: {nearest_position} found in {end_time-start_time}s")
 
+    # Scipy
+    print("#######################")
+    start_time = time.time()
+    scipy_tree = spatial.KDTree(points)
+    end_time = time.time()
+    print(f"Scipy KdTree constructed in {end_time - start_time}s")
+    start_time = time.time()
+    d, i = scipy_tree.query([s])
+    end_time = time.time()
+    print(f"Scipy tree solution: {scipy_tree.data[i[0]]} found in {end_time-start_time}s")
+
+
     # FINDING NEAREST NEIGHBORS AT DISTANCE K
-    distance = 5.0
-    print(f"Nearest neighbors at distance {distance}")
+    distance = 10.0
+    print("#######################")
+    print(f"Nearest neighbors of {s} at distance {distance}")
     
     # naive approach
     nearest_points_naive = []
@@ -67,18 +84,26 @@ def main():
             nearest_points_naive.append(p)
     end_time = time.time()
     print(f"Naive solution found {len(nearest_points_naive)} points in {end_time-start_time}s")
-    print(nearest_points_naive)
 
+    # kd tree
     start_time = time.time()
     nearest_points_tree = t.surrounding_positions(s, distance)
     end_time = time.time()
     print(f"KdTree solution found in {len(nearest_points_tree)} points in {end_time - start_time}s")
-    print(nearest_points_tree)
+    
+    # Scipy
+    start_time = time.time()
+    nearest_points_scipy = scipy_tree.query_ball_point(s, distance)
+    end_time = time.time()
+    print(f"Scipy solution found in {len(nearest_points_scipy)} points in {end_time - start_time}s")
+
+    # Tests
+    print("#######################")
     for p in nearest_points_tree:
         assert(dist(p, s) <= distance)
     for p in nearest_points_naive:
         assert p in nearest_points_tree
-
+    print("All tests passed!")
 
 if __name__ == '__main__':
     main()

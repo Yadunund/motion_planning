@@ -21,8 +21,8 @@ def main():
 
     map_width = 200
     map_height = 200
-    start = [60, 80]
-    goal = [125, 125]
+    start = [15, 15]
+    goal = [190, 190]
     map_obstacles = []
     
     ob1 = Obstacle(ConvexShape([[75,90], [100, 110], [130, 90]]))

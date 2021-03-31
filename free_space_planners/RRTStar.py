@@ -33,7 +33,7 @@ def SampleUnitBall():
     return np.array([r*np.cos(theta), r*np.sin(theta), 0.0])
 
 def InformedSample(c_max, c_min, x_center, C, map:Map):
-    if c_max < np.inf: # if a path to goal has been found we sample from the prolate  hyperspheroid
+    if c_max != np.inf: # if a path to goal has been found we sample from the prolate  hyperspheroid
         r1 = c_max / 2.0
         rn = math.sqrt(c_max **2 - c_min **2) / 2.0
         L = np.diag([r1, rn, rn])
@@ -46,10 +46,10 @@ def InformedSample(c_max, c_min, x_center, C, map:Map):
 
 
 def RRTStarSolver(map:Map, start:list, goal:list, steps=False, informed=False):
-    goal_radius = 2.0 # meters
+    goal_radius = 2.5 # meters
     max_step = 10.0
-    neighborhood = 20.0
-    n = 6000
+    neighborhood = 10.0
+    n = 7000
 
     # Constants for informed sampling
     c_best = np.inf # cost to goal
@@ -79,15 +79,10 @@ def RRTStarSolver(map:Map, start:list, goal:list, steps=False, informed=False):
 
     found = False
     while (num_expanded < n):
-        num_expanded = num_expanded + 1
-
         if not informed:
             random_position = map.random_position()
         else:
             random_position = InformedSample(c_best, c_min, x_center, C, map)
-
-        if (in_point_collision(random_position, map)):
-            continue
 
         # get nearest node
         new_node = SearchNode(random_position)
@@ -146,6 +141,7 @@ def RRTStarSolver(map:Map, start:list, goal:list, steps=False, informed=False):
         # add new node to graph and tree
         expanded_nodes[(new_node.position[0], new_node.position[1])] = new_node
         tree.add(new_node.position)
+        num_expanded = num_expanded + 1
 
     if (found):
         print(f"Path from {start} to {goal} found with distance {goal_node.distance} after expanding {num_expanded} nodes")
