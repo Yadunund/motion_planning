@@ -49,12 +49,16 @@ Informed-RRT*: python3 free_space_planners/main.py -a irrtstar
 <table>
   <tr>
     <td><img src="https://github.com/Yadunund/motion_planning/blob/master/media/informed_rrtstar.png" alt="rrt" width="400"/></a></td>
+    <td><img src="https://github.com/Yadunund/motion_planning/blob/master/media/birrt.png" alt="rrt" width="400"/></a></td>
   </tr>
 </table>
 <table>
   <tr>
     <td>
       Path from [15, 15] to [190, 190] found with distance 256.380 after expanding 7000 nodes irrtstar ran for 4.364s
+    </td>
+    <td>
+      Path from [15, 15] to [190, 190] found with distance 312.847 after expanding 119 nodes in 0.00724s
     </td>
   </tr>
 </table>

@@ -10,6 +10,7 @@ from Shape import ConvexShape
 from Obstacle import Obstacle
 from RRT import RRTSolver
 from RRTStar import RRTStarSolver
+from BiRRT import BiRRTSolver
 
 from Visualizer import display_solution
 
@@ -42,7 +43,9 @@ def main():
     elif args.algorithm == 'rrtstar':
         path, num_expanded, expanded_nodes = RRTStarSolver(map, start, goal)
     elif args.algorithm == 'irrtstar':
-          path, num_expanded, expanded_nodes = RRTStarSolver(map, start, goal, informed=True)
+        path, num_expanded, expanded_nodes = RRTStarSolver(map, start, goal, informed=True)
+    elif args.algorithm == 'birrt':
+        path, num_expanded, expanded_nodes = BiRRTSolver(map, start, goal)
     else:
         print("Usage error: Supported algorithms are rrt")
         return
