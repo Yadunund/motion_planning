@@ -138,7 +138,10 @@ def RRTStarSolver(map:Map, start:list, goal:list, steps=False, informed=False):
     tree = KdTree(start)
 
     while (num_expanded < n):
-        if not informed:
+
+        if num_expanded % 10 == 0:
+            random_position = goal_node.position
+        elif not informed:
             random_position = map.random_position()
         else:
             random_position = InformedSample(c_best, c_min, x_center, C, map)
@@ -149,7 +152,7 @@ def RRTStarSolver(map:Map, start:list, goal:list, steps=False, informed=False):
         num_expanded = num_expanded + 1
 
     if (goal_node.parent is not None):
-        print(f"Path from {start} to {goal} found with distance {path_distance} after expanding {num_expanded} nodes")
+        print(f"Path from {start} to {goal} found with distance {goal_node.distance} after expanding {num_expanded} nodes")
         node = goal_node
         while (node.parent != None):
             path.append(node.position)

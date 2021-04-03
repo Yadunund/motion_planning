@@ -80,7 +80,7 @@ def RRTSolver(map:Map, start:list, goal:list, steps=False):
     found = False
 
     while (num_expanded < n):
-        random_position = map.random_position()
+        random_position = map.random_position() if num_expanded % 10 != 0 else goal_node.position
         new_node = SearchNode(random_position)
         if (in_point_collision(new_node.position, map)):
             continue
