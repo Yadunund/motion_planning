@@ -11,6 +11,8 @@ import threading
 import time
 import random
 
+from RRT import ExtendResult
+
 def naive_surrounding_positions(position, distance, expanded_nodes):
     surrounding_positions = []
     for p, n in expanded_nodes.items():
@@ -44,6 +46,64 @@ def InformedSample(c_max, c_min, x_center, C, map:Map):
     else:
         return map.random_position()
 
+def extend(tree, new_node, expanded_nodes, max_step, neighborhood, goal_node, goal_radius, map):
+    result = ExtendResult.Reached
+    nearest_position = tree.nearest_position(new_node.position)
+    nearest_node = expanded_nodes[(nearest_position[0], nearest_position[1])]
+
+    distance = dist(new_node.position, nearest_node.position)
+    new_node.distance = distance + nearest_node.distance
+
+    # check if new_node is within step distance from nearest_node
+    if distance > max_step:
+        x1, y1 = nearest_node.position
+        x2, y2 = new_node.position
+        v = [x2 - x1, y2 - y1]
+        magnitude_v = math.sqrt(v[0]**2 + v[1]**2)
+        u = [v[0]/magnitude_v, v[1]/magnitude_v]
+        new_point = [x1 + max_step*u[0], y1 + max_step*u[1]]
+        new_dist = dist(new_point, nearest_node.position)
+        new_node.position = new_point
+        new_node.distance = new_dist + nearest_node.distance
+        result = ExtendResult.Advanced
+
+    if in_line_collision([new_node.position, nearest_node.position], map):
+        return ExtendResult.Trapped, goal_node.distance
+
+    # Assign parent based on lowest distance among neighborhood points
+    new_node.parent = nearest_node
+    # surrounding_positions = naive_surrounding_positions(new_node.position, neighborhood, expanded_nodes)
+    surrounding_positions = tree.surrounding_positions(new_node.position, neighborhood)
+    for position in surrounding_positions:
+        node = expanded_nodes[(position[0], position[1])]
+        neighbor_distance = dist(new_node.position, node.position)
+        if node.distance + neighbor_distance < new_node.distance:
+            if not in_line_collision([node.position, new_node.position], map):
+                new_node.parent = node
+                new_node.distance = node.distance + neighbor_distance
+
+    # Rewire surrounding nodes to new_node if feasible
+    for position in surrounding_positions:
+        node = expanded_nodes[(position[0], position[1])]
+        neighbor_distance = dist(new_node.position, node.position)
+        if new_node.distance + neighbor_distance < node.distance:
+            if not in_line_collision([node.position, new_node.position], map):
+                node.parent = new_node
+                node.distance = new_node.distance + neighbor_distance
+    
+
+    # check if new_node is within goal boundary
+    dist_to_goal = dist(new_node.position, goal_node.position)
+    total_distance = new_node.distance + dist_to_goal
+    if dist_to_goal <= goal_radius and total_distance < goal_node.distance:
+        goal_node.parent = new_node
+        goal_node.distance = total_distance
+
+    # add new node to graph and tree
+    expanded_nodes[(new_node.position[0], new_node.position[1])] = new_node
+    tree.add(new_node.position)
+    
+    return (result, goal_node.distance)
 
 def RRTStarSolver(map:Map, start:list, goal:list, steps=False, informed=False):
     goal_radius = 2.5 # meters
@@ -77,7 +137,6 @@ def RRTStarSolver(map:Map, start:list, goal:list, steps=False, informed=False):
     expanded_nodes[(root.position[0], root.position[1])] = root
     tree = KdTree(start)
 
-    found = False
     while (num_expanded < n):
         if not informed:
             random_position = map.random_position()
@@ -86,65 +145,11 @@ def RRTStarSolver(map:Map, start:list, goal:list, steps=False, informed=False):
 
         # get nearest node
         new_node = SearchNode(random_position)
-        nearest_position = tree.nearest_position(new_node.position)
-        nearest_node = expanded_nodes[(nearest_position[0], nearest_position[1])]
-
-        distance = dist(new_node.position, nearest_node.position)
-        new_node.distance = distance + nearest_node.distance
-
-        # check if new_node is within step distance from nearest_node
-        if distance > max_step:
-            x1, y1 = nearest_node.position
-            x2, y2 = new_node.position
-            v = [x2 - x1, y2 - y1]
-            magnitude_v = math.sqrt(v[0]**2 + v[1]**2)
-            u = [v[0]/magnitude_v, v[1]/magnitude_v]
-            new_point = [x1 + max_step*u[0], y1 + max_step*u[1]]
-            new_dist = dist(new_point, nearest_node.position)
-            new_node.position = new_point
-            new_node.distance = new_dist + nearest_node.distance
-
-        if in_line_collision([new_node.position, nearest_node.position], map):
-            continue
-
-        # Assign parent based on lowest distance among neighborhood points
-        new_node.parent = nearest_node
-        # surrounding_positions = naive_surrounding_positions(new_node.position, neighborhood, expanded_nodes)
-        surrounding_positions = tree.surrounding_positions(new_node.position, neighborhood)
-        for position in surrounding_positions:
-            node = expanded_nodes[(position[0], position[1])]
-            neighbor_distance = dist(new_node.position, node.position)
-            if node.distance + neighbor_distance < new_node.distance:
-                if not in_line_collision([node.position, new_node.position], map):
-                    new_node.parent = node
-                    new_node.distance = node.distance + neighbor_distance
-
-        # Rewire surrounding nodes to new_node if feasible
-        for position in surrounding_positions:
-            node = expanded_nodes[(position[0], position[1])]
-            neighbor_distance = dist(new_node.position, node.position)
-            if new_node.distance + neighbor_distance < node.distance:
-                if not in_line_collision([node.position, new_node.position], map):
-                    node.parent = new_node
-                    node.distance = new_node.distance + neighbor_distance
-        
-
-        # check if new_node is within goal boundary
-        dist_to_goal = dist(new_node.position, goal)
-        total_distance = new_node.distance + dist_to_goal
-        if dist_to_goal <= goal_radius and total_distance < goal_node.distance:
-            c_best = total_distance
-            goal_node.parent = new_node
-            goal_node.distance = total_distance
-            found = True
-
-        # add new node to graph and tree
-        expanded_nodes[(new_node.position[0], new_node.position[1])] = new_node
-        tree.add(new_node.position)
+        result, c_best = extend(tree, new_node, expanded_nodes, max_step, neighborhood, goal_node, goal_radius, map)
         num_expanded = num_expanded + 1
 
-    if (found):
-        print(f"Path from {start} to {goal} found with distance {goal_node.distance} after expanding {num_expanded} nodes")
+    if (goal_node.parent is not None):
+        print(f"Path from {start} to {goal} found with distance {path_distance} after expanding {num_expanded} nodes")
         node = goal_node
         while (node.parent != None):
             path.append(node.position)

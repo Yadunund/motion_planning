@@ -11,6 +11,7 @@ from Obstacle import Obstacle
 from RRT import RRTSolver
 from RRTStar import RRTStarSolver
 from BiRRT import BiRRTSolver
+from BiRRTStar import BiRRTStarSolver
 
 from Visualizer import display_solution
 
@@ -46,6 +47,8 @@ def main():
         path, num_expanded, expanded_nodes = RRTStarSolver(map, start, goal, informed=True)
     elif args.algorithm == 'birrt':
         path, num_expanded, expanded_nodes = BiRRTSolver(map, start, goal)
+    elif args.algorithm == 'birrtstar':
+        path, num_expanded, expanded_nodes = BiRRTStarSolver(map, start, goal, informed=False)
     else:
         print("Usage error: Supported algorithms are rrt")
         return

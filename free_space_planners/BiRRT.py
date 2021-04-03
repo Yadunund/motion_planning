@@ -82,7 +82,7 @@ def display_solution(map:Map, start:list, goal:list, path:list, expanded_nodes_A
 
     plt.show()
 
-def BiRRTSolver(map:Map, start:list, goal:list, steps=False, informed=False):
+def BiRRTSolver(map:Map, start:list, goal:list, steps=False):
     start_time = time.time()
     goal_radius = 2.5 # meters
     max_step = 10.0
@@ -148,7 +148,7 @@ def BiRRTSolver(map:Map, start:list, goal:list, steps=False, informed=False):
 
 
     finish_time = time.time()
-    print(f"Path from {start} to {goal} found with distance {goal_node.distance} after expanding {num_expanded} nodes in {finish_time - start_time}s")
+    print(f"Path from {start} to {goal} found with distance {path_distance} after expanding {num_expanded} nodes in {finish_time - start_time}s")
     display_solution(map, start, goal, path, expanded_nodes_A, expanded_nodes_B, "BiRRT")
 
     return path, num_expanded, {**expanded_nodes_A, **expanded_nodes_B}
