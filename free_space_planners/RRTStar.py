@@ -109,7 +109,7 @@ def RRTStarSolver(map:Map, start:list, goal:list, steps=False, informed=False):
     goal_radius = 2.5 # meters
     max_step = 10.0
     neighborhood = 10.0
-    n = 7000
+    n = 3000
 
     # Constants for informed sampling
     c_best = np.inf # cost to goal

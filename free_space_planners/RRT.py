@@ -56,7 +56,7 @@ def extend(tree, new_node, expanded_nodes, max_step, goal_node, goal_radius, map
 def RRTSolver(map:Map, start:list, goal:list, steps=False):
     goal_radius = 2.5 # meters
     max_step = 10.0
-    n = 7000
+    n = 3000
   
     if in_point_collision(start, map):
         print(f"[error] start {start} is on an obstacle")

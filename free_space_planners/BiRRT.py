@@ -86,7 +86,7 @@ def BiRRTSolver(map:Map, start:list, goal:list, steps=False):
     start_time = time.time()
     goal_radius = 2.5 # meters
     max_step = 10.0
-    n = 7000
+    n = 3000
   
     if in_point_collision(start, map):
         print(f"[error] start {start} is on an obstacle")
