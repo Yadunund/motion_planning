@@ -28,6 +28,7 @@ RRT: python3 free_space_planners/main.py -a rrt
 RRT*: python3 free_space_planners/main.py -a rrtstar
 Informed-RRT*: python3 free_space_planners/main.py -a irrtstar
 Bi-Directional-RRT*: python3 free_space_planners/main.py -a birrt
+Kinodynamic-RRT*: python3 free_space_planners/main.py -a kdrrtstar
 ```
 
 <div align=center>
