@@ -12,6 +12,7 @@ from RRT import RRTSolver
 from RRTStar import RRTStarSolver
 from BiRRT import BiRRTSolver
 from BiRRTStar import BiRRTStarSolver
+from DubinsRRTStar import DubinsRRTStarSolver
 
 from Visualizer import display_solution
 
@@ -49,6 +50,8 @@ def main():
         path, num_expanded, expanded_nodes = BiRRTSolver(map, start, goal)
     elif args.algorithm == 'birrtstar':
         path, num_expanded, expanded_nodes = BiRRTStarSolver(map, start, goal, informed=False)
+    elif args.algorithm == 'kdrrtstar':
+          path, num_expanded, expanded_nodes = DubinsRRTStarSolver(map, start, goal, informed=False)
     else:
         print("Usage error: Supported algorithms are rrt")
         return

@@ -17,15 +17,16 @@ def dist(a, b):
 
 def main():
     n = 100000 # number of points
+    print(f"Generated {n} points")
 
     # generate n points
     points = []
     for i in range(n):
-        x = random.randint(-100, 100)
-        y = random.randint(-100, 100)
+        x = random.uniform(-100, 100)
+        y = random.uniform(-100, 100)
         points.append([x, y])
         
-    s = [random.randint(101,105), random.randint(101, 105)]
+    s = [random.uniform(101,105), random.uniform(101, 105)]
     assert(s not in points)
 
     # FINDING NEAREST NEIGHBOR

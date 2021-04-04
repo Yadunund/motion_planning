@@ -9,8 +9,11 @@ class Node:
 
 class BoundingBox:
       def __init__(self, position, distance):
-          self.min = [position[0] - distance, position[1] - distance]
-          self.max = [position[0] + distance, position[1] + distance]
+          self.min = []
+          self.max = []
+          for i in range(len(position)):
+              self.min.append(position[i] - distance)
+              self.max.append(position[i] + distance)
 
 class KdTree:
     def __init__(self, position:list):
@@ -41,9 +44,12 @@ class KdTree:
         self.__add(position, root, depth)
         
     def __dist(self, first:list, second:list):
-        x1, y1 = first
-        x2, y2 = second
-        return math.sqrt((x1-x2)**2 + (y1-y2)**2)
+        assert(len(first) == len(second))
+        sum = 0
+        for i in range(len(first)):
+            sum = sum + (first[i] - second[i])**2
+        return math.sqrt(sum)
+        
     
     def __closer_distance(self, pivot:list, n1:Node, n2:Node):
         ''' Helper function to return the node n1 or n2 which is closer to pivot'''
@@ -79,7 +85,6 @@ class KdTree:
             position, 
             self.__nearest_position(next_root, position, depth +1),
             root)
-        
         if (self.__dist(position, best.position) > abs(position[axis] - root.position[axis])):
             best = self.__closer_distance(
                 position, 

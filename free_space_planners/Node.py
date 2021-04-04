@@ -4,3 +4,4 @@ class SearchNode:
         self.parent = parent
         # keeping track of distance
         self.distance = distance
+        self.path = None # Dubins path

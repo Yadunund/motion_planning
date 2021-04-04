@@ -68,12 +68,16 @@ Bi-Directional-RRT*: python3 free_space_planners/main.py -a birrt
 <table>
   <tr>
     <td><img src="https://github.com/Yadunund/motion_planning/blob/master/media/birrtstar.png" alt="rrt" width="400"/></a></td>
+    <td><img src="https://github.com/Yadunund/motion_planning/blob/master/media/kinorrtstar.png" alt="rrt" width="400"/></a></td>
   </tr>
 </table>
 <table>
   <tr>
     <td>
       Path from [15, 15] to [190, 190] found with distance 278.758 after expanding 186 nodes in 0.0227s
+    </td>
+    <td>
+      Path from [15, 15, 1.570] to [190, 190, 1.570] found with distance 277.634 after expanding 3000 nodes in 3.508s
     </td>
   </tr>
 </table>
